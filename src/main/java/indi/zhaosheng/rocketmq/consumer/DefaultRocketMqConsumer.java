@@ -23,7 +23,7 @@ import org.springframework.beans.factory.InitializingBean;
 @Slf4j
 @Setter
 @Getter
-public class DefaultRocketMqConsumer implements IRocketMqConsumer, InitializingBean, DisposableBean {
+public class DefaultRocketMqConsumer implements InitializingBean, DisposableBean {
     private String namesrvAddr;
 
     private String topic;
@@ -44,10 +44,10 @@ public class DefaultRocketMqConsumer implements IRocketMqConsumer, InitializingB
 
     private DefaultMQPushConsumer consumer;
 
-    @Override
-    public void setupRocketMqMsgExecutor(IRocketMqMsgExecutor rocketMqMsgExecutor) {
-        this.rocketMqMsgExecutor = rocketMqMsgExecutor;
-    }
+//    @Override
+//    public void setupRocketMqMsgExecutor(IRocketMqMsgExecutor rocketMqMsgExecutor) {
+//        this.rocketMqMsgExecutor = rocketMqMsgExecutor;
+//    }
 
     @Override
     public void destroy() {
@@ -108,11 +108,4 @@ public class DefaultRocketMqConsumer implements IRocketMqConsumer, InitializingB
         return result ? ConsumeOrderlyStatus.SUCCESS : ConsumeOrderlyStatus.SUSPEND_CURRENT_QUEUE_A_MOMENT;
     };
 
-    public IRocketMqMsgExecutor getRocketMqMsgExecutor() {
-        return rocketMqMsgExecutor;
-    }
-
-    public void setRocketMqMsgExecutor(IRocketMqMsgExecutor rocketMqMsgExecutor) {
-        //do nothing
-    }
 }
