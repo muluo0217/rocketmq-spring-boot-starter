@@ -13,7 +13,7 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface RocketMQConsumer {
+public @interface RocketMqConsumer {
 
     String consumerGroup();
 

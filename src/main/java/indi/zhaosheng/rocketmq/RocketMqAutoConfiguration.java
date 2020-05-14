@@ -1,6 +1,6 @@
 package indi.zhaosheng.rocketmq;
 
-import indi.zhaosheng.rocketmq.annotation.RocketMQConsumer;
+import indi.zhaosheng.rocketmq.annotation.RocketMqConsumer;
 import indi.zhaosheng.rocketmq.consumer.DefaultRocketMqConsumer;
 import indi.zhaosheng.rocketmq.consumer.IRocketMqMsgExecutor;
 import indi.zhaosheng.rocketmq.producer.RocketMqProducer;
@@ -37,20 +37,20 @@ import java.util.concurrent.atomic.AtomicLong;
 @Configuration
 @EnableConfigurationProperties(RocketMqProperties.class)
 @ConditionalOnClass(MQClientAPIImpl.class)
-public class RocketMQAutoConfiguration {
+public class RocketMqAutoConfiguration {
 
     @Bean
     @ConditionalOnClass(DefaultMQProducer.class)
     @ConditionalOnMissingBean(DefaultMQProducer.class)
     @ConditionalOnProperty(prefix = "spring.rocketmq", value = {"namesrvAddr", "producer.group"})
-    public DefaultMQProducer mqProducer(RocketMqProperties rocketMQProperties) {
+    public DefaultMQProducer mqProducer(RocketMqProperties rocketMqProperties) {
 
-        RocketMqProperties.Producer producerConfig = rocketMQProperties.getProducer();
+        RocketMqProperties.Producer producerConfig = rocketMqProperties.getProducer();
         String groupName = producerConfig.getGroup();
         Assert.hasText(groupName, "[spring.rocketmq.producer.group] must not be null");
 
         DefaultMQProducer producer = new DefaultMQProducer(producerConfig.getGroup());
-        producer.setNamesrvAddr(rocketMQProperties.getNamesrvAddr());
+        producer.setNamesrvAddr(rocketMqProperties.getNamesrvAddr());
         // producer.setSendMsgTimeout(producerConfig.getSendMsgTimeout());
         // producer.setRetryTimesWhenSendFailed(producerConfig.getRetryTimesWhenSendFailed());
         // producer.setRetryTimesWhenSendAsyncFailed(producerConfig.getRetryTimesWhenSendAsyncFailed());
@@ -84,11 +84,11 @@ public class RocketMQAutoConfiguration {
         private StandardEnvironment environment;
 
         @Resource
-        private RocketMqProperties rocketMQProperties;
+        private RocketMqProperties rocketMqProperties;
 
         @Override
         public void afterPropertiesSet() {
-            Map<String, Object> beans = this.applicationContext.getBeansWithAnnotation(RocketMQConsumer.class);
+            Map<String, Object> beans = this.applicationContext.getBeansWithAnnotation(RocketMqConsumer.class);
             beans.forEach(this::registerConsumers);
         }
 
@@ -100,9 +100,9 @@ public class RocketMQAutoConfiguration {
             }
 
             IRocketMqMsgExecutor rocketMqMsgExecutor = (IRocketMqMsgExecutor) bean;
-            RocketMQConsumer annotation = clazz.getAnnotation(RocketMQConsumer.class);
+            RocketMqConsumer annotation = clazz.getAnnotation(RocketMqConsumer.class);
             BeanDefinitionBuilder beanBuilder = BeanDefinitionBuilder.rootBeanDefinition(DefaultRocketMqConsumer.class);
-            beanBuilder.addPropertyValue("namesrvAddr", rocketMQProperties.getNamesrvAddr());
+            beanBuilder.addPropertyValue("namesrvAddr", rocketMqProperties.getNamesrvAddr());
             beanBuilder.addPropertyValue("topic", environment.resolvePlaceholders(annotation.topic()));
 
             beanBuilder.addPropertyValue("consumerGroup", environment.resolvePlaceholders(annotation.consumerGroup()));
