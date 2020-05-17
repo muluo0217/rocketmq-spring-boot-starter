@@ -15,9 +15,11 @@ import java.lang.annotation.*;
 @Documented
 public @interface RocketMqConsumer {
 
+    String topic();
+
     String consumerGroup();
 
-    String topic();
+    String tags();
 
     MessageModel messageModel() default MessageModel.CLUSTERING;
 
